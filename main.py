@@ -5,6 +5,7 @@ import jpegdec
 import time
 from getinfo import *
 from time_math import time_conversion
+from homeassistant import *
 
 presto = Presto()
 display = presto.display
@@ -24,7 +25,9 @@ display.clear()
 display.set_pen(LIGHT_BLUE)
 display.text("Welcome to Presto!", 10, 10, scale=2)
 
-# fetch the time
+# fetch stuff
+distance, times = fetch_data() # fetch home assistant data
+
 time_data = fetch_time() # fetch the datetime string
 
 time_string = time_data[11:16] # extract the time part of it and set this as time string
@@ -79,9 +82,6 @@ decimal = Button(15, 200, 30, 30)
 
 
 number_input_string = ""
-
-distance = 0.0
-times = 0.0
 
 def buttons_screen():
     display.set_pen(LIGHT_BLUE)
@@ -284,6 +284,8 @@ def check_update_screen_buttons():
         
     if confirm.is_pressed():
         page = "home"
+        update_distance(distance)
+        update_time(times)
         presto.update()
 
 touch_ticks = time.ticks_ms() # the current tick
@@ -293,7 +295,7 @@ presto.set_backlight(0.1)
 page = "home"
 
 def main():
-    global page, touch_ticks, last_fetch
+    global page, touch_ticks, last_fetch, distance, times
     
     while True:
         touch.poll()
@@ -320,16 +322,16 @@ def main():
             
             date_string = timedata_to_date(time_data) # call the function `timedata_to_date` to convert it into a date (basically the get_date without the fetching part)
             
+            distance, times = fetch_data()
+            
             last_fetch = time.ticks_ms()
         
         if touch.state:
             touch_ticks = time.ticks_ms()
-            print("leds on")
             leds_on()
             presto.set_backlight(1)
             
         if time.ticks_ms() >= touch_ticks + (10*1000):
-            print("leds off")
             leds_off()
             presto.set_backlight(0.1)
             
