@@ -7,10 +7,10 @@ from getinfo import *
 from time_math import time_conversion
 from homeassistant import *
 
-presto = Presto()
+presto = Presto(full_res=True)
 display = presto.display
 touch = presto.touch
-button_1 = Button(5, 5, 40, 20)
+button_1 = Button(10, 10, 80, 40)
 width = display.measure_text("2,400km", 1, 3)
     
 TEXT_BLUE = display.create_pen(34, 36, 91)
@@ -23,7 +23,7 @@ display.clear()
 
 # welcome
 display.set_pen(LIGHT_BLUE)
-display.text("Welcome to Presto!", 10, 10, scale=2)
+display.text("Welcome to Presto!", 20, 20, scale=4)
 
 # fetch stuff
 distance, times = fetch_data() # fetch home assistant data
@@ -37,24 +37,24 @@ seconds = int(timedata_to_seconds(time_data))
 
 for i in range(60 - seconds):
     display.set_pen(LIGHT_BLUE)
-    display.text("Waiting to get time.", 10, 30, scale=2)
-    display.text("Welcome to Presto!", 10, 10, scale=2)
+    display.text("Waiting to get time.", 20, 60, scale=4)
+    display.text("Welcome to Presto!", 20, 20, scale=4)
     presto.update()
     time.sleep_ms(333)
     display.set_pen(BLACK)
     display.clear()
     
     display.set_pen(LIGHT_BLUE)
-    display.text("Waiting to get time..", 10, 30, scale=2)
-    display.text("Welcome to Presto!", 10, 10, scale=2)   
+    display.text("Waiting to get time..", 20, 60, scale=4)
+    display.text("Welcome to Presto!", 20, 20, scale=4)   
     presto.update()
     time.sleep_ms(333)
     display.set_pen(BLACK)
     display.clear()
     
     display.set_pen(LIGHT_BLUE)
-    display.text("Waiting to get time...", 10, 30, scale=2)
-    display.text("Welcome to Presto!", 10, 10, scale=2)
+    display.text("Waiting to get time...", 20, 60, scale=4)
+    display.text("Welcome to Presto!", 20, 20, scale=4)
     presto.update()
     time.sleep_ms(333)
     display.set_pen(BLACK)
@@ -64,77 +64,77 @@ time_data = fetch_time() # fetch the datetime string
 time_string = time_data[11:16] # extract the time part of it and set this as time string
 
 
-btn1 = Button(15, 80, 30, 30)
-btn4 = Button(15, 120, 40, 20)
-btn7 = Button(15, 160, 40, 20)
-btn2 = Button(55, 80, 40, 20)
-btn5 = Button(55, 120, 40, 20)
-btn8 = Button(55, 160, 40, 20)
-btn0 = Button(55, 200, 40, 20)
-btn3 = Button(95, 80, 40, 20)
-btn6 = Button(95, 120, 40, 20)
-btn9 = Button(95, 160, 40, 20)
-btn_reset = Button(95, 200, 40, 20)
-add_to_distance = Button(145, 80, 80, 50)
-add_to_time = Button(145, 140, 80, 50)
-confirm = Button(145, 200, 80, 30)
-decimal = Button(15, 200, 30, 30)
+btn1 = Button(30, 160, 60, 60)
+btn4 = Button(30, 240, 80, 40)
+btn7 = Button(30, 320, 80, 40)
+btn2 = Button(110, 160, 80, 40)
+btn5 = Button(110, 240, 80, 40)
+btn8 = Button(110, 320, 80, 40)
+btn0 = Button(110, 400, 80, 40)
+btn3 = Button(190, 160, 80, 40)
+btn6 = Button(190, 240, 80, 40)
+btn9 = Button(190, 320, 80, 40)
+btn_reset = Button(190, 400, 80, 40)
+add_to_distance = Button(290, 160, 160, 100)
+add_to_time = Button(290, 280, 160, 100)
+confirm = Button(290, 400, 160, 60)
+decimal = Button(30, 400, 60, 60)
 
 
 number_input_string = ""
 
 def buttons_screen():
     display.set_pen(LIGHT_BLUE)
-    display.rectangle(15, 80, 30, 30) # first column, 1
-    display.rectangle(15, 120, 30, 30) # 4
-    display.rectangle(15, 160, 30, 30) # 7
-    display.rectangle(15, 200, 30, 30) # .
+    display.rectangle(30, 160, 60, 60) # first column, 1
+    display.rectangle(30, 240, 60, 60) # 4
+    display.rectangle(30, 320, 60, 60) # 7
+    display.rectangle(30, 400, 60, 60) # .
 
-    display.rectangle(55, 80, 30, 30) # second column, 2
-    display.rectangle(55, 120, 30, 30)# 5
-    display.rectangle(55, 160, 30, 30) # 8
-    display.rectangle(55, 200, 30, 30) # 0
+    display.rectangle(110, 160, 60, 60) # second column, 2
+    display.rectangle(110, 240, 60, 60)# 5
+    display.rectangle(110, 320, 60, 60) # 8
+    display.rectangle(110, 400, 60, 60) # 0
 
-    display.rectangle(95, 80, 30, 30) # third column, 3
-    display.rectangle(95, 120, 30, 30) # 6
-    display.rectangle(95, 160, 30, 30) # 9
-    display.rectangle(95, 200, 30, 30) # reset button
+    display.rectangle(190, 160, 60, 60) # third column, 3
+    display.rectangle(190, 240, 60, 60) # 6
+    display.rectangle(190, 320, 60, 60) # 9
+    display.rectangle(190, 400, 60, 60) # reset button
 
-    display.rectangle(135, 80, 95, 50) # add to distance
-    display.rectangle(135, 140, 95, 50) # add to time
-    display.rectangle(135, 200, 95, 30) # confirm
+    display.rectangle(270, 160, 190, 100) # add to distance
+    display.rectangle(270, 280, 190, 100) # add to time
+    display.rectangle(270, 400, 190, 60) # confirm
     
     display.set_font("bitmap8")
     display.set_pen(TEXT_BLUE)
-    display.text("1", 26, 85, scale=3)
-    display.text("2", 64, 85, scale=3)
-    display.text("3", 104, 85, scale=3)
-    display.text("4", 24, 125, scale=3)
-    display.text("5", 64, 125, scale=3)
-    display.text("6", 103, 125, scale=3)
-    display.text("7", 23, 165, scale=3)
-    display.text("8", 63, 165, scale=3)
-    display.text("9", 103, 165, scale=3)
-    display.text("0", 63, 205, scale=3)
-    display.text("CL", 97, 203, scale=3)
-    display.text(".", 27, 187, scale=5)
+    display.text("1", 52, 170, scale=6)
+    display.text("2", 128, 170, scale=6)
+    display.text("3", 208, 170, scale=6)
+    display.text("4", 48, 250, scale=6)
+    display.text("5", 128, 250, scale=6)
+    display.text("6", 206, 250, scale=6)
+    display.text("7", 46, 330, scale=6)
+    display.text("8", 126, 330, scale=6)
+    display.text("9", 206, 330, scale=6)
+    display.text("0", 126, 410, scale=6)
+    display.text("CL", 194, 406, scale=6)
+    display.text(".", 54, 374, scale=10)
 
-    display.text("Add to", 140, 90, scale=2) # add to distance text string
-    display.text("distance", 140, 105, scale=2)
+    display.text("Add to", 280, 180, scale=4) # add to distance text string
+    display.text("distance", 280, 210, scale=4)
 
-    display.text("Add to", 140, 150, scale=2) # add to time text string
-    display.text("time", 140, 165, scale=2)
+    display.text("Add to", 280, 300, scale=4) # add to time text string
+    display.text("time", 280, 330, scale=4)
 
-    display.text("Confirm", 140, 208, scale=2)
+    display.text("Confirm", 280, 416, scale=4)
     
-    display.text("Input:", 10, 15, scale=2) # input:
-    display.text(f"{number_input_string}", 70, 15, scale=2) # input value
+    display.text("Input:", 20, 30, scale=4) # input:
+    display.text(f"{number_input_string}", 140, 30, scale=4) # input value
     
-    display.text("Distance adding:", 10, 35, scale=2) # distance adding
-    display.text("km", 215, 35, scale=2) # distance unit
+    display.text("Distance adding:", 20, 70, scale=4) # distance adding
+    display.text("km", 430, 70, scale=4) # distance unit
     
-    display.text("Time adding:", 10, 55, scale=2) # time adding
-    display.text("min", 209, 55, scale=2) # time unit
+    display.text("Time adding:", 20, 110, scale=4) # time adding
+    display.text("min", 418, 110, scale=4) # time unit
 
     presto.update()
 
@@ -171,30 +171,30 @@ def clocks():
     # Display the result
 
     display.set_pen(TEXT_BLUE)
-    display.set_thickness(3)
+    display.set_thickness(6)
     display.set_font("sans")
-    display.text(f"{distance}km", 65, 80, scale=0.8) # distance_value_string + km
+    display.text(f"{distance}km", 130, 160, scale=1.6) # distance_value_string + km
+    
+    display.set_thickness(4)
+    display.text(time_conversion(times), 136, 120, scale=1.0) # how much time I have taken
+    display.text("Out of 10,921", 126, 200, scale=1.0) # out of total distance needed to be covered
+    display.set_thickness(2)
+    display.text(f"{str(round((int(distance)/10921)*100, 2))}%", 190, 240, scale=1.4) #percentage
+
+    display.set_pen(LIGHT_BLUE)
+    display.set_thickness(6)
+    display.text(f"{date_string}", 100, 440, scale=1.8) # date text
+
+    display.set_pen(LIGHT_BLUE)
+    display.set_thickness(16)
+    display.text(f"{time_string}", 60, 360, scale=4)
+    display.set_pen(LIGHT_BLUE)
+    display.rectangle(10, 10, 80, 40)
     
     display.set_thickness(2)
-    display.text(time_conversion(times), 68, 60, scale=0.5) # how much time I have taken
-    display.text("Out of 10,921", 63, 100, scale=0.5) # out of total distance needed to be covered
-    display.set_thickness(1)
-    display.text(f"{str(round((int(distance)/10921)*100, 2))}%", 95, 120, scale=0.7) #percentage
-
-    display.set_pen(LIGHT_BLUE)
-    display.set_thickness(3)
-    display.text(f"{date_string}", 50, 220, scale=0.9) # date text
-
-    display.set_pen(LIGHT_BLUE)
-    display.set_thickness(8)
-    display.text(f"{time_string}", 30, 180, scale=2)
-    display.set_pen(LIGHT_BLUE)
-    display.rectangle(5, 5, 40, 20)
-    
-    display.set_thickness(1)
     display.set_pen(TEXT_BLUE)
     display.set_font("sans")
-    display.text("UPDATE", 8, 15, scale=0.3)
+    display.text("UPDATE", 16, 30, scale=0.6)
     presto.update()
     
 def check_update_screen_buttons():
@@ -253,7 +253,7 @@ def check_update_screen_buttons():
     if btn_reset.is_pressed():
         number_input_string = ""
         display.set_pen(BLACK)
-        display.rectangle(40, 15, 200, 15)
+        display.rectangle(80, 30, 400, 30)
         time.sleep_ms(200)
         presto.update()
         
@@ -263,7 +263,7 @@ def check_update_screen_buttons():
         presto.update()
         
     if add_to_distance.is_pressed():
-        display.text(f"{number_input_string}", 162, 35, scale=2) # distance value
+        display.text(f"{number_input_string}", 324, 70, scale=4) # distance value
         print(number_input_string)
         
                 
@@ -276,16 +276,16 @@ def check_update_screen_buttons():
 
             # welcome
             display.set_pen(LIGHT_BLUE)
-            display.text("There was an error...", 10, 10, scale=2)
+            display.text("There was an error...", 20, 20, scale=4)
 
         number_input_string = ""
         display.set_pen(BLACK)
-        display.rectangle(40, 15, 200, 15)
+        display.rectangle(80, 30, 400, 30)
         time.sleep_ms(200)
         presto.update()
     
     if add_to_time.is_pressed():
-        display.text(f"{number_input_string}", 125, 55, scale=2) # distance value
+        display.text(f"{number_input_string}", 250, 110, scale=4) # distance value
         print(number_input_string)
         
         try:
@@ -297,11 +297,11 @@ def check_update_screen_buttons():
 
             # welcome
             display.set_pen(LIGHT_BLUE)
-            display.text("There was an error...", 10, 10, scale=2)
+            display.text("There was an error...", 20, 20, scale=4)
 
         number_input_string = ""
         display.set_pen(BLACK)
-        display.rectangle(40, 15, 200, 15)
+        display.rectangle(80, 30, 400, 30)
         time.sleep_ms(200)
         presto.update()
         
