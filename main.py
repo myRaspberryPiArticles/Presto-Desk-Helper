@@ -265,7 +265,19 @@ def check_update_screen_buttons():
     if add_to_distance.is_pressed():
         display.text(f"{number_input_string}", 162, 35, scale=2) # distance value
         print(number_input_string)
-        distance += float(number_input_string)
+        
+                
+        try:
+            distance += float(number_input_string)
+        except Exception as e:
+            # clear the screen from what it was
+            display.set_pen(BLACK)
+            display.clear()
+
+            # welcome
+            display.set_pen(LIGHT_BLUE)
+            display.text("There was an error...", 10, 10, scale=2)
+
         number_input_string = ""
         display.set_pen(BLACK)
         display.rectangle(40, 15, 200, 15)
@@ -275,7 +287,18 @@ def check_update_screen_buttons():
     if add_to_time.is_pressed():
         display.text(f"{number_input_string}", 125, 55, scale=2) # distance value
         print(number_input_string)
-        times += float(number_input_string)
+        
+        try:
+            times += float(number_input_string)
+        except Exception as e:
+            # clear the screen from what it was
+            display.set_pen(BLACK)
+            display.clear()
+
+            # welcome
+            display.set_pen(LIGHT_BLUE)
+            display.text("There was an error...", 10, 10, scale=2)
+
         number_input_string = ""
         display.set_pen(BLACK)
         display.rectangle(40, 15, 200, 15)
@@ -284,8 +307,8 @@ def check_update_screen_buttons():
         
     if confirm.is_pressed():
         page = "home"
-        update_distance(distance)
-        update_time(times)
+        update_distance(round(distance,2))
+        update_time(round(times,2))
         presto.update()
 
 touch_ticks = time.ticks_ms() # the current tick
@@ -295,11 +318,28 @@ presto.set_backlight(0.1)
 page = "home"
 
 def main():
-    global page, touch_ticks, last_fetch, distance, times
+    global page, touch_ticks, last_fetch, distance, times, time_string, date_string
     
     while True:
         touch.poll()
+
+        if time.ticks_ms() >= last_fetch + (60*1000):
+            print("time update")
+            time_data = fetch_time() # fetch the datetime string
+            time_string = time_data[11:16] # extract the time part of it and set this as time string
+            date_string = timedata_to_date(time_data) # call the function `timedata_to_date` to convert it into a date (basically the get_date without the fetching part)
+            distance, times = fetch_data()
+            last_fetch = time.ticks_ms()
         
+        if touch.state:
+            touch_ticks = time.ticks_ms()
+            leds_on()
+            presto.set_backlight(1)
+            
+        if time.ticks_ms() >= touch_ticks + (10*1000):
+            leds_off()
+            presto.set_backlight(0.1)
+            
         if page == "home":
             clocks()
             presto.update()
@@ -314,26 +354,6 @@ def main():
             buttons_screen()
             check_update_screen_buttons()
             presto.update()
-
-        if time.ticks_ms() >= last_fetch + (60*1000):
-            print("time update")
-            time_data = fetch_time() # fetch the datetime string
-            time_string = time_data[11:16] # extract the time part of it and set this as time string
-            
-            date_string = timedata_to_date(time_data) # call the function `timedata_to_date` to convert it into a date (basically the get_date without the fetching part)
-            
-            distance, times = fetch_data()
-            
-            last_fetch = time.ticks_ms()
-        
-        if touch.state:
-            touch_ticks = time.ticks_ms()
-            leds_on()
-            presto.set_backlight(1)
-            
-        if time.ticks_ms() >= touch_ticks + (10*1000):
-            leds_off()
-            presto.set_backlight(0.1)
             
 if __name__ == "__main__":
     main()
